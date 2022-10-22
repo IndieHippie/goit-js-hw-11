@@ -65,21 +65,20 @@ refs.searchForm.addEventListener('submit', handleSubmit);
 async function onLoadMore() {
   console.log(pixabay);
   pixabay.incrementPage();
-    console.log(pixabay);
-
-
-  if (!pixabay.isShowLoadMore) {
-    refs.loadMoreBtn.classList.add('is-hidden');
-    Notify.info(
-      'We are sorry, but you have reached the end of search results.'
-    );
-    return;
-  }
+  console.log(pixabay);
 
   try {
     const { hits } = await pixabay.getPhotos();
     createMarkup(hits);
+    smoothlyScroll()
     lightbox.refresh();
+    if (!pixabay.isShowLoadMore) {
+      refs.loadMoreBtn.classList.add('is-hidden');
+      Notify.info(
+        'We are sorry, but you have reached the end of search results.'
+      );
+      return;
+    }
   } catch (error) {
     Notify.failure(error.message, 'Something went wrong!');
     clearPage();
@@ -92,4 +91,16 @@ function clearPage() {
   pixabay.resetPage();
   refs.galleryContainer.innerHTML = '';
   refs.loadMoreBtn.classList.add('is-hidden');
+}
+
+
+function smoothlyScroll() {
+  const { height: cardHeight } = document
+  .querySelector(".gallery")
+  .firstElementChild.getBoundingClientRect();
+
+window.scrollBy({
+  top: cardHeight * 2,
+  behavior: "smooth",
+});
 }

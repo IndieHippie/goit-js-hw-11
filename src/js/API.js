@@ -8,7 +8,7 @@ export class PixabayAPI {
   #page = 1;
   #query = '';
   #totalPages = 0;
-  #perPage = 30;
+  #perPage = 40;
   #params = {
     params: {
       key: '30416408-c6842ca729ef5a51b1af270dd',
